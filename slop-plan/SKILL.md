@@ -19,11 +19,11 @@ Plan HTML follows the `encase` design language: monochrome black/white, hard bor
 
 ## Setup
 
-Repo (private, needs access): https://github.com/Jemo69/html-planner-server — CLI lives in `cli/`, app serves `https://slop-plans.vercel.app/dashboard`.
+Repo (public): https://github.com/Jemo69/slop-plan — CLI lives in `cli/`, app serves `https://slop-plans.vercel.app/dashboard`.
 
 ```bash
-# One-line install (needs repo access)
-curl -sSL https://raw.githubusercontent.com/Jemo69/html-planner-server/main/cli/install.sh | bash
+# One-line install
+curl -sSL https://raw.githubusercontent.com/Jemo69/slop-plan/main/cli/install.sh | bash
 # Or manually: cd cli && uv sync  (then `plan --help`)
 # Auth before any write op:
 plan auth init   # or: plan auth login

@@ -9,10 +9,10 @@ Upload a screen recording or screenshot, get back a `<video>` / `<img>` markdown
 
 ## Setup
 
-Repo (private, needs access): https://github.com/Jemo69/slop-media — app: https://slop-media-jemo69s-projects.vercel.app
+Repo (public): https://github.com/Jemo69/slop-media — app: https://slop-media-jemo69s-projects.vercel.app
 
 ```bash
-# Install once (needs repo access). Zero deps, node 18+.
+# Install once. Zero deps, node 18+.
 npm install -g github:Jemo69/slop-media
 # Persist config so env vars aren't needed every call:
 slop-media setup --url https://slop-media-jemo69s-projects.vercel.app --token <SLOP_MEDIA_TOKEN>
