@@ -42,7 +42,5 @@ git clone https://github.com/Jemo69/skills.git ~/skills
 | `slop-media` | Uploads screen recordings/screenshots, returns embed markdown for PR bodies. | "embed video in PR", "share a screenshot" |
 | `slop-plan` | `plan` CLI: create, manage, publish HTML plans. Backing store for planner. | "publish a plan", "list plans" |
 | `swarm-review` | Swarms independent reviewers until they agree; cap 4 rounds. | "review", "second opinion", "swarm this" |
-| `writer` | Writes in the builder voice: pragmatic, in-the-trenches technical prose. | "write a teardown / blog post / manual" |
+| `writer` | Writes in the builder voice: pragmatic, in-the-trenches technical prose. | "write an article / teardown / manual" |
 | `writing-great-skills` | Reference for writing predictable skills: vocabulary and principles. | writing or editing a skill |
-
-`shots/` is a data dir (screenshot output), not a skill.
