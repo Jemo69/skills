@@ -5,7 +5,7 @@ description: Swarm independent reviewers on a change until it scores 10/10 with 
 
 # Swarm-review
 
-One reviewer is a sample. Two or three cheap reviewers cost less than one bad merge. Fuses a review loop (author vs fresh reviewer, until 10/10) with jury-style multi-model agreement reached through whatever model-calling skill is native to your harness — never hardcode model names or versions, they rot. Closed by a `dogfood` gate that proves the change live.
+One reviewer is a sample. Two or three cheap reviewers cost less than one bad merge. Fuses a review loop (author vs fresh reviewer, until 10/10) with jury-style multi-model agreement reached through native delegation (opencode, herdr, or T3 Code — never hardcoded model names, they rot), fixed up under the `greak` loop, and closed by a `dogfood` gate that proves the change live.
 
 ## Rules
 
@@ -24,12 +24,12 @@ Done when: goal sentence, file list, and green check output are all stated. Red 
 
 ### 2 - Pick the jurors (native delegation, never model names)
 
-Reach the jury through the delegation skill native to your harness — do not name specific models or versions:
+Route the jury through the delegation native to where you are running — do not name specific models or versions:
 
-- **In opencode:** spawn reviewer subagents with different models (see `opencode-cli` skill: `opencode agent create --mode subagent --model ...` / `opencode run`), one subagent per role below.
 - **In herdr:** spawn sibling reviewer agents of different kinds (`herdr agent start <name> --kind <kind>`, then `herdr agent prompt <name> "<brief>"`; see `herdr` skill). Different kinds are the model mix.
-- **In pi or similar:** use the harness's native subagent/delegate tools (same pattern as the `greak` workflow/subagents loop).
-- **Fallback (no runner):** sequential fresh-context runs of the current model, one prompted as `correctness: find wrong behavior`, the other as `simplicity: find what to delete`.
+- **In T3 Code:** use the native MCP delegation tools — call `orchestrator_capabilities` once per thread, then one `delegate_task` per role below (brief, findings, objections). Every re-check is a new `delegate_task`; follow a running delegate's `next`, never poll; `task_cancel` anything you replace.
+- **Otherwise (not in herdr or T3 Code — e.g. in opencode):** spawn reviewer subagents with different models (see `opencode-cli` skill: `opencode agent create --mode subagent --model ...` / `opencode run`), one subagent per role below.
+- **No supported runner: stop and report.** Sequential same-model runs are not a jury — say which runner is missing instead of faking agreement.
 
 Default roles (strongest mix available, high reasoning):
 
@@ -58,9 +58,9 @@ Launch all jurors in parallel through the native calls from step 2 (each with it
 
 Done when: every juror returned verdict + score + findings, or its failure is recorded as non-approval.
 
-### 4 - Fix loop (until 10/10)
+### 4 - Fix loop (until 10/10, under `greak`)
 
-Fix blockers first, then shoulds, then ALL nits (nothing left open except nits explicitly waived with a reason the jurors accept). Smallest diff that satisfies all jurors; re-run `prove-it` on anything the fix touched. Re-send the SAME brief + new diff for the next round.
+Fix under the `greak` skill's core loop — Orient, Inspect every file before touching it, Decide one approach, Act one atomic change at a time, Verify, Recover (stop the round and report after 3 failed recoveries on the same error). Fix blockers first, then shoulds, then ALL nits (nothing left open except nits explicitly waived with a reason the jurors accept). Smallest diff that satisfies all jurors; re-run `prove-it` on anything the fix touched. Re-send the SAME brief + new diff for the next round.
 
 Done when: every juror says APPROVE with score 10/10. Never settle for 9/10 — loop again. Every 4th round without 10/10, report per-juror scores + the blocking findings and wait for the user's go-ahead before burning more rounds.
 
