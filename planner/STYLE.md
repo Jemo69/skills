@@ -1,0 +1,1 @@
+Style plan HTML with the `encase` skill — the JEMO CORE design language: monochrome black/white, hard containment borders, uppercase structural labels, 8–12px corner radius. Read the encase skill for the full specification.
