@@ -7,6 +7,20 @@ description: Headless Selenium web testing — drive pages, screenshot, assert, 
 
 Drive the web with headless Chromium (Selenium), screenshot every step, and record MP4s with local ffmpeg — no paid recording service. Project lives at `/home/jemo/projects/Mishpat/`, runnable as `mishpat` on PATH.
 
+## Setup
+
+Repo (public): https://github.com/Jemo69/Mishpat
+
+```bash
+git clone https://github.com/Jemo69/Mishpat.git ~/projects/Mishpat
+cd ~/projects/Mishpat && uv sync
+# shim (~/.local/bin/mishpat):
+#   #!/bin/sh
+#   exec uv run --project /home/jemo/projects/Mishpat /home/jemo/projects/Mishpat/main.py "$@"
+# Requires: Chromium + chromedriver at /usr/bin/chromium, /usr/bin/chromedriver
+mishpat --help   # must list shell, screenshot, run, agent, record, helpful, mcp
+```
+
 First-class consumers are coding CLIs (Claude Code, Codex, OpenCode, Pi): they drive it from the terminal, read `shots/` PNGs with vision, load this skill natively (symlinked into each CLI's skills dir), and call its headless tools over MCP (`mishpat-headless`).
 
 ## 1 - Orient

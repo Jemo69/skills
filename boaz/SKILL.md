@@ -10,6 +10,19 @@ invisible DISPLAY (`:99`+), the agent drives it and reads screenshots, and the
 human only looks when the agent verdict is READY_FOR_HUMAN. Project lives at
 `/home/jemo/projects/boaz/`, runnable as `boaz` (shim in `~/.local/bin/`).
 
+## Setup
+
+Repo (public): https://github.com/Jemo69/boaz
+
+```bash
+git clone https://github.com/Jemo69/boaz.git ~/projects/boaz
+cd ~/projects/boaz && uv sync
+# shim (~/.local/bin/boaz):
+#   #!/bin/sh
+#   exec uv --directory /home/jemo/projects/boaz run python /home/jemo/projects/boaz/main.py "$@"
+boaz doctor   # must report X apps capturable (needs Xvfb/xdotool/ffmpeg/scrot/tesseract)
+```
+
 Mishpat owns the browser; boaz owns the desktop. Never confuse them.
 
 ## 1 - Orient

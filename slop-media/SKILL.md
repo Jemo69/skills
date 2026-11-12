@@ -7,16 +7,23 @@ description: Upload screen recordings and screenshots and get a video/image mark
 
 Upload a screen recording or screenshot, get back a `<video>` / `<img>` markdown line, paste it in the PR body. GitHub renders both inline.
 
-## Setup (env)
+## Setup
+
+Repo (private, needs access): https://github.com/Jemo69/slop-media — app: https://slop-media-jemo69s-projects.vercel.app
+
+```bash
+# Install once (needs repo access). Zero deps, node 18+.
+npm install -g github:Jemo69/slop-media
+# Persist config so env vars aren't needed every call:
+slop-media setup --url https://slop-media-jemo69s-projects.vercel.app --token <SLOP_MEDIA_TOKEN>
+# stored in ~/.config/slop-media/config.json (mode 600). Env vars override it when set.
+```
+
+Env fallback:
 ```
 SLOP_MEDIA_URL=https://slop-media-jemo69s-projects.vercel.app
 SLOP_MEDIA_TOKEN=<ask owner — same value as the app's UPLOAD_TOKEN>
 ```
-
-Install once (private repo, needs access): `npm install -g github:Jemo69/slop-media`. Zero deps, node 18+. Then persist config so env vars aren't needed every call:
-```bash
-slop-media setup --url https://slop-media-jemo69s-projects.vercel.app --token <SLOP_MEDIA_TOKEN>
-# stored in ~/.config/slop-media/config.json (mode 600). Env vars override it when set.
 
 ## Upload and embed in PR body
 ```bash

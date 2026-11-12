@@ -17,11 +17,18 @@ Plan HTML follows the `encase` design language: monochrome black/white, hard bor
 
 **Exception:** when the user explicitly asks you to generate a demo UI (a clickable prototype, mockup, or preview of the interface itself), style the plan page to match the user's requested demo rather than forcing encase — encase still applies to everything else.
 
-## Prerequisites
+## Setup
 
-Run `plan auth init` or `plan auth login` before any write operation. Verify with `plan auth whoami`.
+Repo (private, needs access): https://github.com/Jemo69/html-planner-server — CLI lives in `cli/`, app serves `https://slop-plans.vercel.app/dashboard`.
 
-The app URL is: https://slop-plans.vercel.app/dashboard
+```bash
+# One-line install (needs repo access)
+curl -sSL https://raw.githubusercontent.com/Jemo69/html-planner-server/main/cli/install.sh | bash
+# Or manually: cd cli && uv sync  (then `plan --help`)
+# Auth before any write op:
+plan auth init   # or: plan auth login
+plan auth whoami
+```
 
 ## When to Use This Skill
 

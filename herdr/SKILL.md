@@ -7,6 +7,16 @@ description: "Herd panes, agents, and workspaces with herdr. Use when user menti
 
 One leading word: **herd** — inspect, spawn, prompt, and reap background work without stealing focus.
 
+## Setup
+
+No git repo — herdr is a closed-source binary (https://herdr.dev). Already installed at `~/.local/bin/herdr`.
+
+```bash
+herdr status    # client + server must both answer
+herdr update    # download and install the latest version
+```
+Docs: https://herdr.dev/agent-guide.md · https://herdr.dev/llms.txt
+
 ## 0. Gate (every run)
 
 ```bash
