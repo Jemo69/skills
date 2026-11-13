@@ -1,5 +1,6 @@
 ---
 name: writer
+disable-model-invocation: true
 description: Write in the builder voice — Jeremy's pragmatic, in-the-trenches technical prose. Use when asked to write or rewrite an article, blog post, teardown, technical manual, security briefing, trend forecast, or other long-form technical piece.
 ---
 

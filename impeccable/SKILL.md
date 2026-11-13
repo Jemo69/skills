@@ -3,7 +3,7 @@ name: impeccable
 description: Impeccable — use when the user wants to design, redesign, shape, critique, audit, polish, clarify, distill, harden, optimize, adapt, animate, colorize, extract, or otherwise improve a frontend interface. Also use for bland designs that need to become bolder or loud designs that should become quieter, live browser iteration on UI elements, or ambitious visual effects that should feel technically extraordinary. Not for backend-only or non-UI tasks.
 ---
 
-Designs and iterates production-grade frontend interfaces. Real working code, committed design choices, exceptional craft.
+Designs and iterates production-grade frontend interfaces. Real working code, committed design choices, exceptional craft. Obeys the active `design-system` branch — never invents tokens, colors, or radii the system doesn't name.
 
 ## Setup
 

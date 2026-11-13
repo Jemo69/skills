@@ -22,6 +22,9 @@ PR still belongs in the product.
   `--force-with-lease` against the head SHA observed before the rebase.
 - Do not post a PR comment unless the user asked for one. Use the
   `leaving-pr-comments` skill for every comment posted on the user's behalf.
+- Scope: GitHub `git` repos only. In `jj`-managed repos, translate commands
+  (`jj rebase` instead of `git rebase`, no `--force-with-lease` semantics)
+  and never assume a `.git` layout.
 
 ## Establish the PR's intent
 
