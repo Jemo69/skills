@@ -18,8 +18,13 @@ change — never `gh --watch`, sleep loops, or re-polling:
 
 - In herdr: wait with the pane watcher / `herdr notification show` so something
   wakes you when checks or the PR change. End the turn after registering.
-- On wake, handle exactly that event (failed checks → step 2, new remarks →
-  step 3, conflicts → step 5, all green → step 6), then end the turn again.
+- Wake events (the only things that wake you):
+  - Checks failed on head commit → step 2.
+  - All required checks passed → step 6.
+  - New commits pushed to the PR branch → step 4 (re-review the new diff).
+  - New comments, reviews, or requested changes → step 3.
+  - Mergeable state changed (conflicts appeared/resolved) → step 5.
+- On wake, handle exactly that event, then end the turn again.
 - Children never watch. Before handback, unwatch.
 
 ## Reports
