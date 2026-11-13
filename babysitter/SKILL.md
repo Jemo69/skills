@@ -11,6 +11,23 @@ it.
 
 One step at a time — clear a step's bar before opening the next.
 
+## Watcher (the only tool this skill needs)
+
+Event-driven, never polling. Register the watch once, end the turn, wake on state
+change — never `gh --watch`, sleep loops, or re-polling:
+
+- In herdr: wait with the pane watcher / `herdr notification show` so something
+  wakes you when checks or the PR change. End the turn after registering.
+- On wake, handle exactly that event (failed checks → step 2, new remarks →
+  step 3, conflicts → step 5, all green → step 6), then end the turn again.
+- Children never watch. Before handback, unwatch.
+
+## Reports
+
+This skill produces no HTML report — speed is the point; the step-7 chat report
+is the whole output. If the user wants a visual status page, that's the
+`slop-plan` skill's job (`plan create --html`), a separate task on demand.
+
 ## Terminal states
 
 The watch closes on exactly one of these, and the report names which:
