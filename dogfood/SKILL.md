@@ -9,7 +9,7 @@ Become the most demanding user of the app and prove every claim with observed be
 
 Single-thread only. No sibling agents. If you need a second model, stop and call swarm-review.
 
-## Rules (apply every run — from prove-it)
+## Rules (apply every run)
 
 - **Check before edit.** Name the narrowest real check first (one test file, `typecheck`, build, `boaz screenshot`, `mishpat run`). Run it once for a baseline.
 - **Toolchain:** `uv run` for Python (never raw `python`/`pip`), `bun`/`bunx` for JS (never `npm`/`npx`), `jj status` / `jj log` for VCS (never `git` commands).
@@ -67,7 +67,7 @@ Read recent session transcripts for what real users actually hit. Generalize to 
 
 GATE (10/10 required to advance): you can name the class in one sentence and list every site that shares it. No class equals 0/10 — stop.
 
-## 5 - Fix with the prove-it loop — narrowly
+## 5 - Fix loop — narrowly
 
 Fix the worst surface or the whole bug class, nothing else. One logical change at a time, strict blast radius. Max 5 verify rounds here; 5th failure = stop, name assumption, hand back.
 

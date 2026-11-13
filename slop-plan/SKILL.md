@@ -5,17 +5,17 @@ description: Use the plan CLI to create, manage, and publish HTML plans. Use whe
 
 # Plan CLI
 
-The `plan` CLI creates, manages, and publishes HTML plans backed by projects. It is the single source of truth for plan CLI commands — other skills (planner, greak) defer to this reference.
+The `plan` CLI creates, manages, and publishes HTML plans backed by projects. It is the single source of truth for plan CLI commands.
 
 ## Routing
 
-When the user asks to plan a task (not just create/share a plan), defer to the `planner` skill for the interview and the HTML file. This skill owns the CLI commands only.
+When the user asks to plan a task (not just create/share a plan), plan natively: clarify the goal, define phases, write the HTML file. This skill owns the CLI commands only.
 
 ## Style
 
-Plan HTML follows the `encase` design language: monochrome black/white, hard borders, uppercase structural labels. Read the `encase` skill for the full specification. Plan prose is written in the builder voice per the `writer` skill — direct, candid, pragmatic.
+Plan HTML follows the `design-system` Encase branch: monochrome black/white, hard borders, uppercase structural labels. Read `design-system` for the full specification. Plan prose is written in the builder voice per the `writer` skill — direct, candid, pragmatic.
 
-**Exception:** when the user explicitly asks you to generate a demo UI (a clickable prototype, mockup, or preview of the interface itself), style the plan page to match the user's requested demo rather than forcing encase — encase still applies to everything else.
+**Exception:** when the user explicitly asks you to generate a demo UI (a clickable prototype, mockup, or preview of the interface itself), style the plan page to match the user's requested demo rather than forcing Encase — Encase still applies to everything else.
 
 ## Setup
 

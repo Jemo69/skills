@@ -34,7 +34,7 @@ Done when: all N metric outputs are collected with pass/fail. Discard attempts t
 
 Rank by rubric (metric first, then correctness, then smallest diff). Pick the winner as base. Graft at most 1–2 best ideas from losers into the winner — never a three-way merge. Re-run the metric on the grafted result.
 
-Done when: winner + graft source(s) are named, metric shows improvement over baseline, and `prove-it` passes on the grafted change.
+Done when: winner + graft source(s) are named, metric shows improvement over baseline, and `dogfood` step 5 (prove-it loop) passes on the grafted change.
 
 ### 4 - Ledger it
 

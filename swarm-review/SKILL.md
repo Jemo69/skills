@@ -5,11 +5,11 @@ description: Swarm independent reviewers on a change until it scores 10/10 with 
 
 # Swarm-review
 
-One reviewer is a sample. Two or three cheap reviewers cost less than one bad merge. Fuses a review loop (author vs fresh reviewer, until 10/10) with jury-style multi-model agreement reached through native delegation (opencode, herdr, or T3 Code — never hardcoded model names, they rot), fixed up under the `greak` loop, and closed by a `dogfood` gate that proves the change live.
+One reviewer is a sample. Two or three cheap reviewers cost less than one bad merge. Fuses a review loop (author vs fresh reviewer, until 10/10) with jury-style multi-model agreement reached through native delegation (opencode, herdr, or T3 Code — never hardcoded model names, they rot), fixed up under the step-4 fix loop, and closed by a `dogfood` gate that proves the change live.
 
 ## Rules
 
-- Review code that already passes its checks. Run `prove-it` first; never review red code (exception: user explicitly asks to throw it away).
+- Review code that already passes its checks. Run `dogfood` step 5 (prove-it loop) first; never review red code (exception: user explicitly asks to throw it away).
 - Reviewers change nothing. They output verdict + findings only, plus append one line to the one-stop score log every round (no separate files per juror).
 - Quorum is 10/10: every juror must say APPROVE with score 10/10. Anything less — one CHANGES vote, or any APPROVE below 10/10 — is another fix round. There is no round cap: loop until 10/10 across the board. Checkpoint: every 4 rounds without 10/10, report scores + what still blocks, and continue only on the user's go-ahead (this bounds cost without lowering the bar).
 - Scope is the diff only (`jj status` short + merge-base diff). Unrelated files are out of scope and must not be touched.
@@ -58,9 +58,9 @@ Launch all jurors in parallel through the native calls from step 2 (each with it
 
 Done when: every juror returned verdict + score + findings, or its failure is recorded as non-approval. Author appends one row per juror to the one-stop score log: `| round | juror/role | verdict | score | blockers | shoulds | top finding |`.
 
-### 4 - Fix loop (until 10/10, under `greak`)
+### 4 - Fix loop (until 10/10)
 
-Fix loop — Orient (goal/state/gap/risks), Inspect every file before touching it, Decide one approach in a sentence, Act one atomic change at a time, Verify (tests + build + lint/type), Recover (read the full error, fix root cause, re-verify; stop the round and report after 3 failed recoveries on the same error). Fix blockers first, then shoulds, then ALL nits (nothing left open except nits explicitly waived with a reason the jurors accept). Smallest diff that satisfies all jurors; re-run `prove-it` on anything the fix touched. Re-send the SAME brief + new diff for the next round.
+Fix loop — Orient (goal/state/gap/risks), Inspect every file before touching it, Decide one approach in a sentence, Act one atomic change at a time, Verify (tests + build + lint/type), Recover (read the full error, fix root cause, re-verify; stop the round and report after 3 failed recoveries on the same error). Fix blockers first, then shoulds, then ALL nits (nothing left open except nits explicitly waived with a reason the jurors accept). Smallest diff that satisfies all jurors; re-run `dogfood` step 5 on anything the fix touched. Re-send the SAME brief + new diff for the next round.
 
 Done when: every juror says APPROVE with score 10/10 and the score log shows every round. Never settle for 9/10 — loop again. Every 4th round without 10/10, report the full score log + the blocking findings and wait for the user's go-ahead before burning more rounds.
 
@@ -70,7 +70,7 @@ A 10/10 jury is necessary but not sufficient — reviewers read code, operators 
 
 1. Follow `dogfood` steps 1-7 on the FRESH build with the fix applied, scoping the audit to every surface the diff touches plus one neighboring surface nobody re-checked.
 2. The `dogfood` STRICT GATE applies unchanged: overall equals the MINIMUM surface score, advance only on 10/10.
-3. Any dogfood deduction below 10/10 re-opens the step 4 fix loop (fix narrowly, re-run `prove-it`), and the fix must go back through a full jury round (step 3) — a dogfood fix never skips re-review.
+3. Any dogfood deduction below 10/10 re-opens the step 4 fix loop (fix narrowly, re-run `dogfood` step 5), and the fix must go back through a full jury round (step 3) — a dogfood fix never skips re-review.
 4. Record the dogfood scores table + evidence in the report and append it to `DOGFOOD.md` per the dogfood skill's step 7.
 
 Done when: jury is unanimous 10/10 AND the dogfood run scores 10/10 on every surface with dual-channel evidence. A sub-10/10 dogfood run sends the change back to step 4, no matter what the jury said.
