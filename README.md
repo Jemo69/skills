@@ -40,3 +40,33 @@ git clone https://github.com/Jemo69/skills.git ~/skills
 | `swarm-review` | Swarms independent reviewers to 10/10 with a one-stop score log + PR-body table. | "review", "second opinion", "swarm this" |
 | `writer` | Writes in the builder voice: pragmatic, in-the-trenches technical prose. | "write an article / teardown / manual" |
 | `writing-great-skills` | Reference for writing predictable skills: vocabulary and principles. | writing or editing a skill |
+
+## How they connect
+
+```
+close-out / stage-it
+  ├── dogfood (prove every change, step 5 loop)
+  ├── swarm-review (jury before filing)
+  │     ├── dogfood (10/10 gate after jury)
+  │     └── opencode-cli / herdr (spawn juror agents)
+  ├── file-pr (open the PR)
+  └── babysitter (watch to terminal state)
+        ├── leaving-pr-comments (replies, with attribution)
+        └── slop-plan (visual status page, only on demand)
+
+dogfood
+  ├── boaz (desktop proof) / mishpat (web proof)
+  ├── hill-climb (winner validated by dogfood step 5)
+  └── slop-media (evidence embeds for PR bodies)
+
+design-system
+  ├── impeccable (obeys the active branch, never invents tokens)
+  └── slop-plan (Encase branch styles plan HTML, writer voices the prose)
+
+modernize ── leaving-pr-comments (replies, with attribution)
+file-pr ── leaving-pr-comments (descriptions carry no attribution)
+```
+
+Rule of thumb: capabilities live in exactly one skill; the rest point at it.
+`dogfood` step 5 is the shared prove loop, `slop-plan` the shared publisher,
+`leaving-pr-comments` the shared comment format, `herdr` the shared topology.
