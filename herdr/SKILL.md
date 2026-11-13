@@ -78,7 +78,17 @@ herdr pane send-keys <pane-id> ctrl+c
 ```
 `--match` = literal, `--regex` = Rust regex; snapshot searched immediately (existing output can match); omit `--timeout` = wait forever. Sources: `visible` viewport · `recent` with wraps · `recent-unwrapped` logs/transcripts (prefer) · `detection` agent snapshot. `--format ansi` only when color is evidence. `--lines N` pulls scrollback (alt-screen rows unavailable). Large-output fallback: agent writes Markdown to temp dir, replies with path, you read the file. macOS line-limit reject → wait for shell prompt, retry.
 
-## 5. Topology + worktrees (only when asked)
+## 5. Layout rule — tab per task, panes per role
+
+Tab per task, panes per role. Lay out before starting:
+
+- One tab per task (`tab create --workspace <w> --cwd <repo> --label <t> --no-focus`). Two repos = two tabs.
+- Inside each tab, one pane per role: edits pane + test/checks pane (`pane split --direction right --cwd <repo> --no-focus`). Test output never interleaves with editing.
+- Keep the spawning pane as home base; report the tab/pane layout in the final report.
+
+Done when: every task has its own tab, every role its own pane, and home base is untouched.
+
+## 6. Topology + worktrees (only when asked)
 
 ```bash
 herdr workspace create --cwd <path> --label <t> --no-focus
@@ -94,7 +104,7 @@ herdr notification show <id> | herdr integration install|uninstall|status
 herdr session list|attach|stop|delete
 ```
 
-## 6. Remote machines (same commands, one prefix)
+## 7. Remote machines (same commands, one prefix)
 
 ```bash
 herdr machine list --json

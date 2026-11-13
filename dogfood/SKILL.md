@@ -1,11 +1,21 @@
 ---
 name: dogfood
-description: "Dogfood any app like the operator who depends on it - observe real behavior, harsh-score every surface, hunt the bug class, fix, verify, report. Use when user says dogfood, harsh review, 10/10 loop, fidelity audit, scroll feels fragile, look more like original, show evidence, prove it works, get to par, or audit like replacement."
+description: "Dogfood any app like the operator who depends on it - observe real behavior, harsh-score every surface, hunt the bug class, fix, verify, report. Use when user says dogfood, harsh review, 10/10 loop, fidelity audit, prove it, verify, show evidence, does it work, scroll feels fragile, look more like original, get to par, audit like replacement, or before claiming any fix done, filing a PR, or babysitting."
 ---
 
 # Dogfood
 
 Become the most demanding user of the app and prove every claim with observed behavior. No credit for effort or approximations.
+
+Single-thread only. No sibling agents. If you need a second model, stop and call swarm-review.
+
+## Rules (apply every run — from prove-it)
+
+- **Check before edit.** Name the narrowest real check first (one test file, `typecheck`, build, `boaz screenshot`, `mishpat run`). Run it once for a baseline.
+- **Toolchain:** `uv run` for Python (never raw `python`/`pip`), `bun`/`bunx` for JS (never `npm`/`npx`), `jj status` / `jj log` for VCS (never `git` commands).
+- **No mockups.** Windows `C:\Users\...` reads via `/mnt/c/...`. Screenshots must be fresh captures of the current build, never substitutes. If the file is missing, stop and ask for re-upload.
+- **Two channels.** Every claim needs code-side proof (test/typecheck/log) AND user-side proof (screenshot, recording, CLI stdout, exit code). When they disagree, believe the user-facing one and file the gap.
+- **Cap:** max 5 verify rounds per fix. On the 5th failure, stop and name the shared assumption + next probe — never a 6th variation.
 
 ## STRICT GATE — 10/10 or stop
 
@@ -57,11 +67,25 @@ Read recent session transcripts for what real users actually hit. Generalize to 
 
 GATE (10/10 required to advance): you can name the class in one sentence and list every site that shares it. No class equals 0/10 — stop.
 
-## 5 - Fix, test, commit, push — narrowly
+## 5 - Fix with the prove-it loop — narrowly
 
-Fix the worst surface or the whole bug class, nothing else. Extract pure logic so the class gets unit tests that run without the full harness. The project's suites must be green before and after — that is the only truth that counts. Commit immediately; concurrent loops clobber uncommitted work. Push the branch to GitHub immediately after commit so the fix is not local-only. Never re-litigate a committed fix.
+Fix the worst surface or the whole bug class, nothing else. One logical change at a time, strict blast radius. Max 5 verify rounds here; 5th failure = stop, name assumption, hand back.
 
-GATE (10/10 required to advance): suites green before AND after, work committed AND pushed to GitHub (branch visible on remote), fresh evidence proves the fix live, AND re-run of steps 2-3 re-scores every touched surface at 10/10. Unpushed commit equals 0/10. Still below 10/10 equals loop the fix — do not advance to report, PR, or babysit.
+**5a - Name the proof.** One line: goal + check command + user-visible evidence (e.g. `fix lyric ranking | bun test search.test.ts | mishpat screenshot before/after`). Record the baseline output before editing.
+
+**5b - Smallest edit.** Read every file before editing. `jj status` shows only intended files, and you can state why each file is in the diff.
+
+**5c - Run the check, read the first error.** Run the exact command from 5a. Read FULL output from the FIRST error (file:line + stack frame in your code), not the tail. Fix root cause, not symptom. Skimming to the tail is a failed step.
+
+**5d - User-side proof (second channel).** Rebuild + relaunch, then capture what the user sees:
+- Web: `mishpat screenshot <URL> --out shots/<name>.png` (+ DOM snapshot or console log).
+- Desktop: `boaz screenshot` on a fresh launch (stale window = fail). Blank capture → `boaz doctor`, report `X apps capturable` / `GL apps capturable` before retrying.
+- CLI/API: scripted invocation capturing stdout, exit code, side effects.
+Both channels must agree; user-facing wins on disagreement.
+
+**5e - Commit + push.** Extract pure logic so the class gets unit tests that run without the full harness. Suites green before AND after. Commit immediately; push branch immediately so the fix is not local-only. Never re-litigate a committed fix.
+
+GATE (10/10 required to advance): suites green before AND after, work committed AND pushed (branch visible on remote), fresh dual-channel evidence proves the fix live, AND re-run of steps 2-3 re-scores every touched surface at 10/10. Unpushed commit equals 0/10. Still below 10/10 equals loop this step — do not advance to report, PR, or babysit.
 
 ## 6 - Record what is honestly unmet
 

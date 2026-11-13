@@ -10,7 +10,7 @@ One reviewer is a sample. Two or three cheap reviewers cost less than one bad me
 ## Rules
 
 - Review code that already passes its checks. Run `prove-it` first; never review red code (exception: user explicitly asks to throw it away).
-- Reviewers change nothing. They output verdict + findings only.
+- Reviewers change nothing. They output verdict + findings only, plus append one line to the one-stop score log every round (no separate files per juror).
 - Quorum is 10/10: every juror must say APPROVE with score 10/10. Anything less — one CHANGES vote, or any APPROVE below 10/10 — is another fix round. There is no round cap: loop until 10/10 across the board. Checkpoint: every 4 rounds without 10/10, report scores + what still blocks, and continue only on the user's go-ahead (this bounds cost without lowering the bar).
 - Scope is the diff only (`jj status` short + merge-base diff). Unrelated files are out of scope and must not be touched.
 
@@ -56,13 +56,13 @@ open shoulds is CHANGES, not APPROVE.
 
 Launch all jurors in parallel through the native calls from step 2 (each with its own context, tag, or session). Wait for all. A timeout or error is never approval.
 
-Done when: every juror returned verdict + score + findings, or its failure is recorded as non-approval.
+Done when: every juror returned verdict + score + findings, or its failure is recorded as non-approval. Author appends one row per juror to the one-stop score log: `| round | juror/role | verdict | score | blockers | shoulds | top finding |`.
 
 ### 4 - Fix loop (until 10/10, under `greak`)
 
-Fix under the `greak` skill's core loop — Orient, Inspect every file before touching it, Decide one approach, Act one atomic change at a time, Verify, Recover (stop the round and report after 3 failed recoveries on the same error). Fix blockers first, then shoulds, then ALL nits (nothing left open except nits explicitly waived with a reason the jurors accept). Smallest diff that satisfies all jurors; re-run `prove-it` on anything the fix touched. Re-send the SAME brief + new diff for the next round.
+Fix loop — Orient (goal/state/gap/risks), Inspect every file before touching it, Decide one approach in a sentence, Act one atomic change at a time, Verify (tests + build + lint/type), Recover (read the full error, fix root cause, re-verify; stop the round and report after 3 failed recoveries on the same error). Fix blockers first, then shoulds, then ALL nits (nothing left open except nits explicitly waived with a reason the jurors accept). Smallest diff that satisfies all jurors; re-run `prove-it` on anything the fix touched. Re-send the SAME brief + new diff for the next round.
 
-Done when: every juror says APPROVE with score 10/10. Never settle for 9/10 — loop again. Every 4th round without 10/10, report per-juror scores + the blocking findings and wait for the user's go-ahead before burning more rounds.
+Done when: every juror says APPROVE with score 10/10 and the score log shows every round. Never settle for 9/10 — loop again. Every 4th round without 10/10, report the full score log + the blocking findings and wait for the user's go-ahead before burning more rounds.
 
 ### 5 - Dogfood the change (gate, not a bonus)
 
@@ -75,6 +75,31 @@ A 10/10 jury is necessary but not sufficient — reviewers read code, operators 
 
 Done when: jury is unanimous 10/10 AND the dogfood run scores 10/10 on every surface with dual-channel evidence. A sub-10/10 dogfood run sends the change back to step 4, no matter what the jury said.
 
-### 6 - Handoff
+### 6 - Handoff (score log + PR body)
 
-Report: per-juror verdict + score (all 10/10), blocker/should/nit list with file:line and how each closed, fix commits, final `prove-it` evidence, dogfood scores table + evidence links + `DOGFOOD.md` entry. Only then hand to `babysitter` / `file-pr`. Never merge anything below the double 10/10 (jury + dogfood) as success — state FAIL + what still blocks 10/10 and where.
+Report: full one-stop score log (every round, every juror), blocker/should/nit list with file:line and how each closed, fix commits, final dogfood step-5 evidence, dogfood scores table + evidence links + `DOGFOOD.md` entry. Only then hand to `babysitter` / `file-pr`. Never merge anything below the double 10/10 (jury + dogfood) as success — state FAIL + what still blocks 10/10 and where.
+
+Hand the author a paste-ready PR body block (PR descriptions carry no attribution per `leaving-pr-comments`):
+
+```md
+## Jury (swarm-review)
+
+| Round | Juror | Verdict | Score | Blockers closed |
+|---|---|---|---|---|
+| 1 | correctness | CHANGES | 7/10 | 2/4 |
+| 1 | simplicity | APPROVE | 9/10 | 0/1 |
+| 2 | correctness | APPROVE | 10/10 | 4/4 |
+| 2 | simplicity | APPROVE | 10/10 | 1/1 |
+
+## Dogfood
+
+| Surface | Score | Evidence |
+|---|---|---|
+| <surface> | 10/10 | <path/link> |
+
+## Commits
+
+- <sha> <what changed>
+```
+
+The table is built from the score log — no new scoring at handoff, just formatting.
