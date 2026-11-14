@@ -43,17 +43,16 @@ herdr agent get <name-or-pane-id>
 ```
 Full CLI authority: `herdr --help`, then `herdr agent|pane|workspace|tab|worktree|machine|notification|integration|session|api|config|channel|server` (group alone lists subcommands). Full schema: `herdr api snapshot`, `herdr api schema`.
 
-## 2. Spawn agent (sibling pane, keep focus)
+## 2. Spawn agent (new tab, keep focus)
 
-Default: sibling in current tab + current cwd. No new workspace/tab/worktree/cwd unless asked. Geometry: wide → `right`, narrow/tall → `down`:
+Default: a new tab + current cwd. No new workspace/worktree/cwd unless asked. Never spawn into a split pane — one tab, one pane, one agent:
 
 ```bash
-herdr pane layout --pane "$HERDR_PANE_ID"
-herdr pane split --current --direction right --cwd "$PWD" --no-focus
-# → .result.pane.pane_id
-herdr agent start <name> --kind <kind> --pane <new-pane-id> -- <agent-args...>
+herdr tab create --workspace "$HERDR_WORKSPACE_ID" --cwd "$PWD" --label <task> --no-focus
+# → new tab with a single pane; address that pane below
+herdr agent start <name> --kind <kind> --pane <new-tab-pane-id> -- <agent-args...>
 ```
-Names: `[a-z][a-z0-9_-]{0,31}`, unique among live agents. Kinds: `pi claude codex gemini cursor opencode copilot droid amp grok qwen` (+ `devin agy cline omp mastracode kimi kiro hermes kilo qodercli letta maki muse`). Pane must sit at interactive shell prompt. Success = agent detected + ready; `agent_not_ready` → `agent read` + wait for `idle` before prompting.
+Names: `[a-z][a-z0-9_-]{0,31}`, unique among live agents. Kinds: `pi claude codex gemini cursor opencode copilot droid amp grok qwen` (+ `devin agy cline omp mastracode kimi kiro hermes kilo qodercli letta maki muse`). The tab's single pane must sit at interactive shell prompt. Success = agent detected + ready; `agent_not_ready` → `agent read` + wait for `idle` before prompting.
 
 ## 3. Prompt + wait (agent surface)
 
@@ -66,11 +65,11 @@ herdr agent rename <old> <new> | herdr agent focus <name>
 ```
 Rules: `--wait` alone waits settled (`idle|done|blocked`); add `--until` only for a specific state. Submission gate: must observe `working|blocked` within 5s or returns `agent_prompt_stalled` — never blindly resubmit; `agent get` + `agent read` first. `blocked` = approval/question UI → ask user before answering. `idle|done` = ready (not proof of no hidden dialog). `unknown` = present but unclassified. Target = live agent name **or** hosting pane ID (never terminal IDs / bare kind labels). Prefer agent surface; touch pane surface only for raw terminal control.
 
-## 4. Run ordinary commands (pane surface)
+## 4. Run ordinary commands (tab surface, single pane)
 
 ```bash
-herdr pane split --current --direction right --cwd "$PWD" --no-focus
-herdr pane run <pane-id> "just test"
+herdr tab create --workspace "$HERDR_WORKSPACE_ID" --cwd "$PWD" --label <task> --no-focus
+herdr pane run <tab-single-pane-id> "just test"
 herdr pane wait-output <pane-id> --match "test result" --timeout 120000
 herdr pane read <pane-id> --source recent-unwrapped --lines 120
 herdr pane send-text <pane-id> "literal…"   # no Enter; pane run = text+Enter
@@ -78,15 +77,16 @@ herdr pane send-keys <pane-id> ctrl+c
 ```
 `--match` = literal, `--regex` = Rust regex; snapshot searched immediately (existing output can match); omit `--timeout` = wait forever. Sources: `visible` viewport · `recent` with wraps · `recent-unwrapped` logs/transcripts (prefer) · `detection` agent snapshot. `--format ansi` only when color is evidence. `--lines N` pulls scrollback (alt-screen rows unavailable). Large-output fallback: agent writes Markdown to temp dir, replies with path, you read the file. macOS line-limit reject → wait for shell prompt, retry.
 
-## 5. Layout rule — tab per task, panes per role
+## 5. Layout rule — tabs only, never panes
 
-Tab per task, panes per role. Lay out before starting:
+Tabs only. Never `pane split`, never multi-pane layouts. Lay out before starting:
 
 - One tab per task (`tab create --workspace <w> --cwd <repo> --label <t> --no-focus`). Two repos = two tabs.
-- Inside each tab, one pane per role: edits pane + test/checks pane (`pane split --direction right --cwd <repo> --no-focus`). Test output never interleaves with editing.
-- Keep the spawning pane as home base; report the tab/pane layout in the final report.
+- One tab per role inside a task: an edits tab and a checks tab. Test output never interleaves with editing.
+- Each tab keeps its single initial pane — address that pane for agent start and reads, never create more.
+- Keep the spawning tab as home base; report the tab layout in the final report.
 
-Done when: every task has its own tab, every role its own pane, and home base is untouched.
+Done when: every task and every role has its own tab, no tab holds more than one pane, and home base is untouched.
 
 ## 6. Topology + worktrees (only when asked)
 
