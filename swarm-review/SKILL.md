@@ -37,9 +37,8 @@ Pick the jury by task type — reviewers look where the risk lives:
   1. Correctness + edge cases
   2. Simplicity + scope discipline
 - **UI change:** jurors review with their eyes, not just the diff. Each juror
-  runs the `dogfood` observation harness (steps 1-2: fresh build, `boaz`
-  screenshot for desktop / `mishpat` screenshot for web) and scores surfaces
-  from pixels:
+  opens a `dogfood` session (steps 1-2: fresh build, `boaz` screenshot for
+  desktop / `mishpat` screenshot for web) and scores surfaces from pixels:
   1. Visual fidelity vs reference (tokens, positions, states per surface)
   2. Interaction + scope discipline (every control reachable, no dead wires,
      no diff beyond the ordered surfaces)
