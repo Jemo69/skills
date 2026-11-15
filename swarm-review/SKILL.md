@@ -31,12 +31,22 @@ Route the jury through the delegation native to where you are running — do not
 - **Otherwise (not in herdr or T3 Code — e.g. in opencode):** spawn reviewer subagents with different models (see `opencode-cli` skill: `opencode agent create --mode subagent --model ...` / `opencode run`), one subagent per role below.
 - **No supported runner: stop and report.** Sequential same-model runs are not a jury — say which runner is missing instead of faking agreement.
 
-Default roles (strongest mix available, high reasoning):
+Pick the jury by task type — reviewers look where the risk lives:
 
-1. Correctness + edge cases
-2. Simplicity + scope discipline
+- **Code/backend change:** default roles (strongest mix available, high reasoning):
+  1. Correctness + edge cases
+  2. Simplicity + scope discipline
+- **UI change:** jurors review with their eyes, not just the diff. Each juror
+  runs the `dogfood` observation harness (steps 1-2: fresh build, `boaz`
+  screenshot for desktop / `mishpat` screenshot for web) and scores surfaces
+  from pixels:
+  1. Visual fidelity vs reference (tokens, positions, states per surface)
+  2. Interaction + scope discipline (every control reachable, no dead wires,
+     no diff beyond the ordered surfaces)
+  A UI verdict without fresh captures is not a verdict — no screenshots,
+  no APPROVE.
 
-Done when: the delegation route + juror roles are named before any review starts.
+Done when: the task type is named, the delegation route + juror roles are named before any review starts.
 
 ### 3 - One brief for all jurors
 
@@ -49,6 +59,7 @@ Out of scope: <list>
 Checks: <command + result>
 Review only, change nothing. Reply: verdict APPROVE|CHANGES, score /10,
 findings as: id severity(blocker|should|nit) file:line claim fix
+UI rounds add per finding: evidence: <fresh screenshot path> (same build for every juror; stale captures are rejected)
 Scoring bar (hold it ruthlessly): 10/10 means zero blockers, zero shoulds,
 and every nit either fixed or explicitly waived with a reason. 9/10 with
 open shoulds is CHANGES, not APPROVE.

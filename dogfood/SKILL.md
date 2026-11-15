@@ -57,7 +57,7 @@ GATE (10/10 required to advance): you hold fresh, measured, dual-channel evidenc
 
 ## 3 - Harsh audit, per surface
 
-Score each surface 0-10 starting from 10, deducting per proven deviation against the closest reference — actual state vs expected state, item by item (order, labels, behavior, empty states, error paths, dismiss/cancel behavior). Overall score is the MINIMUM, never the average. Cover what the last audit skipped, not the same ground.
+Score each surface 0-10 starting from 10, deducting per proven deviation against the closest reference — actual state vs expected state, item by item (order, labels, behavior, empty states, error paths, dismiss/cancel behavior). Overall score is the MINIMUM, never the average. Jury UI rounds: every deduction cites a fresh capture path from the round's shared build — no capture, no deduction, and an uncaptured surface scores 0/10. Cover what the last audit skipped, not the same ground.
 
 GATE (10/10 required to advance): every surface has a score, each deduction names its evidence, and the worst surface is identified. If overall is below 10/10 you MUST go to step 4-5 fix loop. Skipping to report on anything below 10/10 is a failed run.
 
