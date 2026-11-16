@@ -26,7 +26,7 @@ Done when: goal sentence, file list, and green check output are all stated. Red 
 
 Route the jury through the delegation native to where you are running — do not name specific models or versions:
 
-- **In herdr:** spawn sibling reviewer agents of different kinds (`herdr agent start <name> --kind <kind>`, then `herdr agent prompt <name> "<brief>"`; see `herdr` skill). Different kinds are the model mix.
+- **In herdr:** spawn sibling reviewer agents of different kinds (`herdr agent start <name> --kind <kind>`, then `herdr agent prompt <name> "<brief>"`; see `herdr` skill). Different kinds are the model mix. Herdr agents are peers — nothing reports back to your thread on its own. So the brief orders each juror to write its verdict + findings to an agreed file (`/tmp/jury-<name>-r<round>.md`) and run `herdr notification show <name> DONE` on completion. You reap files; you never poll agents for results.
 - **In T3 Code:** use the native MCP delegation tools — call `orchestrator_capabilities` once per thread, then one `delegate_task` per role below (brief, findings, objections). Every re-check is a new `delegate_task`; follow a running delegate's `next`, never poll; `task_cancel` anything you replace.
 - **Otherwise (not in herdr or T3 Code — e.g. in opencode):** spawn reviewer subagents with different models (see `opencode-cli` skill: `opencode agent create --mode subagent --model ...` / `opencode run`), one subagent per role below.
 - **No supported runner: stop and report.** Sequential same-model runs are not a jury — say which runner is missing instead of faking agreement.
@@ -64,7 +64,7 @@ and every nit either fixed or explicitly waived with a reason. 9/10 with
 open shoulds is CHANGES, not APPROVE.
 ```
 
-Launch all jurors in parallel through the native calls from step 2 (each with its own context, tag, or session). Wait for all. A timeout or error is never approval.
+Launch all jurors in parallel through the native calls from step 2 (each with its own context, tag, or session). Reap as results land: in T3 follow each delegate's `next`; in herdr collect each DONE notification, read its file, log the score row at once. Streaming fix is allowed mid-round ONLY on files no still-running juror holds — never edit under an active review of the same checkout. A timeout or error is never approval.
 
 Done when: every juror returned verdict + score + findings, or its failure is recorded as non-approval. Author appends one row per juror to the one-stop score log: `| round | juror/role | verdict | score | blockers | shoulds | top finding |`.
 
