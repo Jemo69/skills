@@ -37,6 +37,7 @@ git clone https://github.com/Jemo69/skills.git ~/skills
 | `slop-media` | Uploads screen recordings/screenshots, returns embed markdown for PR bodies. | "embed video in PR", "share a screenshot" |
 | `slop-plan` | `plan` CLI: create, manage, publish HTML plans. Backing store for planner. | "publish a plan", "list plans" |
 | `stage-it` | Same as close-out but leaves the PR open, never merges. | "stage it" |
+| `statechart` | Checks a TLA+ model of state transitions and draws it as a Mermaid statechart with shortest bug paths. | "/statechart", "show this bug as a path through states" |
 | `swarm-review` | Swarms independent reviewers to 10/10 with a one-stop score log + PR-body table. | "review", "second opinion", "swarm this" |
 | `writer` | Writes in the builder voice: pragmatic, in-the-trenches technical prose. | "write an article / teardown / manual" |
 | `writing-great-skills` | Reference for writing predictable skills: vocabulary and principles. | writing or editing a skill |
